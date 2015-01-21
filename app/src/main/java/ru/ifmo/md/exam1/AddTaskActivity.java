@@ -31,7 +31,12 @@ import ru.ifmo.md.exam1.db.model.TaskTable;
  */
 public class AddTaskActivity extends Activity {
 
-    private HashMap<Category, Boolean> categories;
+    String[] names ;
+    ArrayList<Integer> selectedItems ;
+    boolean[] isSelected ;
+
+
+    private HashMap<Category, Boolean> categories = new HashMap<>();
     private long curId = -1;
     private Task task = null;
 
@@ -41,7 +46,10 @@ public class AddTaskActivity extends Activity {
         super.onCreate(bundle);
         setContentView(R.layout.activity_add);
 
-        curId = bundle.getLong("id", -1);
+        if (bundle != null)
+            curId = bundle.getLong("id", -1);
+        else
+            curId = -1;
         Set<Long> have = new HashSet<>();
         Cursor cursor;
         if (curId != -1) {
@@ -91,9 +99,9 @@ public class AddTaskActivity extends Activity {
     }
 
     private Dialog createDialog() {
-        String[] names = new String[categories.size()];
-        final ArrayList<Integer> selectedItems = new ArrayList<>();
-        boolean[] isSelected = new boolean[categories.size()];
+        names = new String[categories.size()];
+        selectedItems = new ArrayList<>();
+        isSelected = new boolean[categories.size()];
         int count = 0;
         for (Map.Entry<Category, Boolean> i : categories.entrySet()) {
             if (i.getValue()) {
@@ -148,7 +156,7 @@ public class AddTaskActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_add_task, menu);
         return true;
     }
 
@@ -205,7 +213,12 @@ public class AddTaskActivity extends Activity {
     }
 
     public void addTags(View view) {
-        createDialog().show();
-
+        try {
+            Dialog d = createDialog();
+            d.show();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            }
     }
 }

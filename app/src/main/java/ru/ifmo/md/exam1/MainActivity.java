@@ -1,7 +1,6 @@
 package ru.ifmo.md.exam1;
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
@@ -9,6 +8,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +19,7 @@ import ru.ifmo.md.exam1.db.TODOListContentProvider;
 import ru.ifmo.md.exam1.db.model.CategoryTable;
 
 
-public class MainActivity extends ListActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private ListView rootView;
     private TODOListAdapter todoListAdapter;
@@ -47,7 +47,9 @@ public class MainActivity extends ListActivity implements LoaderManager.LoaderCa
 
         activity = this;
         setContentView(R.layout.activity_main);
-        rootView = getListView();
+        rootView = (ListView)findViewById(R.id.list);
+        todoListAdapter = new TODOListAdapter(this
+                , null, 0);
         rootView.setAdapter(todoListAdapter);
         rootView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -63,8 +65,8 @@ public class MainActivity extends ListActivity implements LoaderManager.LoaderCa
     @Override
     public void onResume() {
         super.onResume();
-        /*getLoaderManager().restartLoader(0, null, this);
-        todoListAdapter.notifyDataSetChanged();*/
+        getLoaderManager().restartLoader(0, null, this);
+        todoListAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -80,7 +82,8 @@ public class MainActivity extends ListActivity implements LoaderManager.LoaderCa
         switch (item.getItemId()) {
             case R.id.action_add:
                 Intent intent = new Intent(this, AddTaskActivity.class);
-                startService(intent);
+                intent.putExtra("id", -1);
+                startActivity(intent);
                 break;
             case R.id.action_sort_by_date:
                 break;
