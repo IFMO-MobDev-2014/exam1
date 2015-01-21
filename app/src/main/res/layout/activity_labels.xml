@@ -1,0 +1,15 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="year2013.ifmo.exam1.LabelsActivity">
+
+    <ListView
+        android:id="@+id/label_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        </ListView>
+
+</LinearLayout>
