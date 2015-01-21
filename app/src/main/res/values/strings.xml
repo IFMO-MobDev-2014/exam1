@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">exam1</string>
+    <string name="app_name">Exam1</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="menu_but">Menu</string>
+    <string name="add_but">Add</string>
+    <string name="title_activity_view">ViewActivity</string>
+    <string name="dialog_title">Delete this task?</string>
+    <string name="positive">Yes</string>
+    <string name="negative">No</string>
+    <string name="dialog_title2">Add new task</string>
+    <string name="ok">OK</string>
+    <string name="no">No</string>
+    <string name="enter_title">Enter title</string>
+    <string name="enter_labels">Enter labels</string>
+    <string name="enter_desc">Enter description</string>
+    <string name="title_activity_labels">LabelsActivity</string>
 
 </resources>
