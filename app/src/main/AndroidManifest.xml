@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ru.ifmo.md.exam1" >
+    package="ru.ifmo.mobdev.exam1" >
+
 
     <application
+
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <activity android:name=".SingleTaskActivity"/>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
@@ -16,6 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider android:name=".db.MyContentProvider" android:exported="true"
+            android:readPermission="true" android:writePermission="true"
+            android:authorities="ru.ifmo.mobdev.exam1" />
     </application>
 
 </manifest>
