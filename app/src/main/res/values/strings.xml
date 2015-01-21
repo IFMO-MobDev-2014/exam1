@@ -4,5 +4,14 @@
     <string name="app_name">exam1</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="action_add">Add</string>
+    <string name="insert_name">Insert name</string>
+    <string name="insert_desc">Insert description</string>
+    <string name="add_new_item">Add new item</string>
+    <string name="edit_item">Edit item</string>
+    <string name="other">Other</string>
+    <string name="study">Study</string>
+    <string name="work">Work</string>
+    <string name="cancel">Cancel</string>
 
 </resources>
