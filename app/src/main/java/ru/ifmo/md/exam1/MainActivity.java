@@ -84,7 +84,7 @@ public class MainActivity extends ListActivity implements LoaderManager.LoaderCa
         }
 
         if (id == R.id.action_sort_by_date) {
-            sortOrder = DataBaseHelper.KEY_DATE + " ASC";
+            sortOrder = DataBaseHelper.KEY_ID + " ASC";
             getLoaderManager().restartLoader(0, null, MainActivity.this);
         }
 
