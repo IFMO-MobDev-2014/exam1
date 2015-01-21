@@ -1,6 +1,7 @@
 package ru.ifmo.md.exam1;
 
 import android.app.LoaderManager;
+import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -8,6 +9,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +20,8 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Date;
 
 import ru.ifmo.md.exam1.database.LabelsTable;
 import ru.ifmo.md.exam1.database.TodoProvider;
@@ -55,6 +59,10 @@ public class TodoEditActivity extends ActionBarActivity implements LoaderManager
         addedLabels = (TextView) findViewById(R.id.et_added_labels);
         times = (TextView) findViewById(R.id.tv_time);
 
+        Date date = new Date();
+        CharSequence timeNow  = DateFormat.format("yyyy-MM-dd HH:mm:ss", date.getTime());
+        times.setText(timeNow);
+
         lvAvailableLables = (ListView) findViewById(R.id.list_available_labels);
         adapter = new SimpleCursorAdapter(
                 this,
@@ -75,13 +83,26 @@ public class TodoEditActivity extends ActionBarActivity implements LoaderManager
                 String newLabel = cursor1.getString(cursor1.getColumnIndex(LabelsTable.COLUMN_DESCRIPTION));
                 cursor1.close();
                 String already = addedLabels.getText().toString();
-                already = already + "|" + newLabel;
+
+                String[] slitted = already.split("\\|");
+                boolean found = false;
+                for (int i = 0; i < slitted.length; i++)
+                    if (slitted[i].equals(newLabel))
+                        found = true;
+                if (found)
+                    return;
+
+                if (TextUtils.isEmpty(already)) {
+                    already = newLabel;
+                }
+                else {
+                    already += "|" + newLabel;
+                }
                 addedLabels.setText(already);
             }
         });
 
         getLoaderManager().initLoader(0, null, this);
-
 
         Bundle extras = getIntent().getExtras();
         todoId = (bundle == null) ? -1 : bundle.getLong(EXTRA_TODO_ID);
@@ -104,12 +125,9 @@ public class TodoEditActivity extends ActionBarActivity implements LoaderManager
             String summary = cursor.getString(cursor.getColumnIndex(TodoTable.COLUMN_SUMMARY));
             String desription = cursor.getString(cursor.getColumnIndex(TodoTable.COLUMN_DESCRIPTION));
             String category = cursor.getString(cursor.getColumnIndex(TodoTable.COLUMN_CATEGORY));
-            String pubDate = cursor.getString(cursor.getColumnIndex(TodoTable.COLUMN_PUB_DATE));
             mSummaryET.setText(summary);
             mDescriptionET.setText(desription);
             addedLabels.setText(category);
-            times.setText(pubDate);
-//            String[] parts = category.split("\\|");
         }
     }
 
@@ -117,6 +135,9 @@ public class TodoEditActivity extends ActionBarActivity implements LoaderManager
     public void confirmClicked(View view) {
         if (TextUtils.isEmpty(mSummaryET.getText().toString())) {
             Toast.makeText(TodoEditActivity.this, getResources().getString(R.string.non_empty_summary), Toast.LENGTH_LONG).show();
+        } else {
+            saveAll();
+            finish();
         }
     }
 
@@ -125,6 +146,17 @@ public class TodoEditActivity extends ActionBarActivity implements LoaderManager
         String desription = mDescriptionET.getText().toString();
         String category = addedLabels.getText().toString();
         String pubDate = times.getText().toString();
+
+        ContentValues values = new ContentValues();
+        values.put(TodoTable.COLUMN_SUMMARY, summary);
+        values.put(TodoTable.COLUMN_DESCRIPTION, desription);
+        values.put(TodoTable.COLUMN_CATEGORY, category);
+        values.put(TodoTable.COLUMN_PUB_DATE, pubDate);
+
+        if (todoId != -1)
+            getContentResolver().update(TodoProvider.CONTENT_URI_TODOS, values, TodoTable.COLUMN_ID + " = " + todoId, null);
+        else
+            getContentResolver().insert(TodoProvider.CONTENT_URI_TODOS, values);
     }
 
     @Override
