@@ -3,12 +3,9 @@
     package="ru.ifmo.md.exam1" >
 
     <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:label="@string/app_name" >
         <activity
-            android:name=".MainActivity"
+            android:name=".TodosOverviewActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -16,6 +13,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".TodoDetailActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" >
+        </activity>
+        <activity android:name=".LabelView"></activity>
+        <provider
+            android:exported="true"
+            android:name=".contentprovider.MyTodoContentProvider"
+            android:authorities="ru.ifmo.md.exam1.contentprovider" >
+        </provider>
     </application>
 
 </manifest>
