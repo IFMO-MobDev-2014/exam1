@@ -4,5 +4,8 @@
     <string name="app_name">exam1</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="action_add">Add</string>
+    <string name="insert_name">Insert name</string>
+    <string name="insert_desc">Insert description</string>
 
 </resources>
