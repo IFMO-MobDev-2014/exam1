@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,9 +46,9 @@ public class AddTaskActivity extends Activity {
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.activity_add);
-
-        if (bundle != null)
-            curId = bundle.getLong("id", -1);
+        Intent i  = getIntent();
+        if (i != null)
+            curId = i.getLongExtra("id", -1);
         else
             curId = -1;
         Set<Long> have = new HashSet<>();
@@ -111,7 +112,10 @@ public class AddTaskActivity extends Activity {
                 isSelected[count] = false;
             }
             names[count] = i.getKey().getName();
+            count ++;
         }
+        //final String[] names = new String[]{"1", "2"};
+//        /final boolean[] isSelected = new boolean[]{false, false};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Categories")

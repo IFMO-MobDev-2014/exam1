@@ -17,6 +17,7 @@ import android.widget.ListView;
 
 import ru.ifmo.md.exam1.db.TODOListContentProvider;
 import ru.ifmo.md.exam1.db.model.CategoryTable;
+import ru.ifmo.md.exam1.db.model.TaskTable;
 
 
 public class MainActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -57,6 +58,13 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
                 Intent intent = new Intent(activity, AddTaskActivity.class);
                 intent.putExtra("id", id);
                 startActivity(intent);
+            }
+        });
+        rootView.setOnLongClickListener( new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                getContentResolver().delete(TODOListContentProvider.CONTENT_URI_TASK, TaskTable._ID + " = ?", new String[]{id+""});
+                //return true;
             }
         });
         todoListAdapter.notifyDataSetChanged();
