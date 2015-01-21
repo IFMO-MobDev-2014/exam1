@@ -25,7 +25,7 @@ public class MainActivity extends ListActivity implements LoaderManager.LoaderCa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getLoaderManager().initLoader(0, null, this);
-        setListAdapter(new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, null, new String[]{"name", "date"}, new int[]{android.R.id.text1, android.R.id.text2 }, 0));
+        setListAdapter(new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, null, new String[]{DataBaseHelper.KEY_NAME, DataBaseHelper.KEY_DATE}, new int[]{android.R.id.text1, android.R.id.text2 }, 0));
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long id) {
@@ -34,10 +34,10 @@ public class MainActivity extends ListActivity implements LoaderManager.LoaderCa
                 args.putBoolean(MyDialog.ARG_EDIT, true);
                 args.putLong(MyDialog.ARG_ID, id);
                 Cursor item = (Cursor) adapterView.getItemAtPosition(i);
-                args.putString(MyDialog.ARG_NAME, item.getString(item.getColumnIndex("name")));
-                args.putString(MyDialog.ARG_DATE, item.getString(item.getColumnIndex("date")));
-                args.putString(MyDialog.ARG_DESC, item.getString(item.getColumnIndex("description")));
-                args.putString(MyDialog.ARG_CATEGORY, item.getString(item.getColumnIndex("category")));
+                args.putString(MyDialog.ARG_NAME, item.getString(item.getColumnIndex(DataBaseHelper.KEY_NAME)));
+                args.putString(MyDialog.ARG_DATE, item.getString(item.getColumnIndex(DataBaseHelper.KEY_DATE)));
+                args.putString(MyDialog.ARG_DESC, item.getString(item.getColumnIndex(DataBaseHelper.KEY_DESCRIPTION)));
+                args.putString(MyDialog.ARG_CATEGORY, item.getString(item.getColumnIndex(DataBaseHelper.KEY_CATEGORY)));
                 addDialog.setArguments(args);
                 getFragmentManager().beginTransaction().add(addDialog, "").commit();
             }
@@ -78,13 +78,13 @@ public class MainActivity extends ListActivity implements LoaderManager.LoaderCa
         }
 
         if (id == R.id.action_sort_by_name) {
-            sortOrder = "name" + " ASC";
+            sortOrder = DataBaseHelper.KEY_NAME + " ASC";
 
             getLoaderManager().restartLoader(0, null, MainActivity.this);
         }
 
         if (id == R.id.action_sort_by_date) {
-            sortOrder = "date" + " ASC";
+            sortOrder = DataBaseHelper.KEY_DATE + " ASC";
             getLoaderManager().restartLoader(0, null, MainActivity.this);
         }
 

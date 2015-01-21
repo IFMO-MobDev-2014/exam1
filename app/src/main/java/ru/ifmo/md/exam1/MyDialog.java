@@ -28,9 +28,9 @@ public class MyDialog extends DialogFragment {
 
         final boolean edit = getArguments().getBoolean(ARG_EDIT, false);
         if (!edit)
-            builder.setTitle("Add new item");
+            builder.setTitle(getActivity().getResources().getString(R.string.add_new_item));
         else
-            builder.setTitle("Edit item");
+            builder.setTitle(getActivity().getResources().getString(R.string.edit_item));
         final View view = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.my_dialog, null);
         builder.setView(view);
         final CheckBox checkBox1 = (CheckBox) view.findViewById(R.id.checkBox1);
@@ -41,25 +41,30 @@ public class MyDialog extends DialogFragment {
             ((EditText) view.findViewById(R.id.editTextDesc)).setText(getArguments().getString(ARG_DESC));
             String cat = getArguments().getString(ARG_CATEGORY);
             if (cat != null) {
-                if (cat.contains("Other")) {
+                if (cat.contains(getActivity().getResources().getString(R.string.other))) {
                     ((CheckBox) view.findViewById(R.id.checkBox1)).setChecked(true);
                 }
-                if (cat.contains("Study")) {
+                if (cat.contains(getActivity().getResources().getString(R.string.study))) {
                     ((CheckBox) view.findViewById(R.id.checkBox2)).setChecked(true);
                 }
-                if (cat.contains("Work")) {
+                if (cat.contains(getActivity().getResources().getString(R.string.work))) {
                     ((CheckBox) view.findViewById(R.id.checkBox3)).setChecked(true);
                 }
             }
 
         }
-        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        String title;
+        if (edit) {
+            title = "Edit";
+        } else
+            title = "Add";
+        builder.setPositiveButton(title, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int pos) {
                 ContentValues contentValues = new ContentValues();
-                contentValues.put("name", ((EditText) view.findViewById(R.id.editTextName)).getText().toString());
-                contentValues.put("date", java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime()));
-                contentValues.put("description", ((EditText) view.findViewById(R.id.editTextDesc)).getText().toString());
+                contentValues.put(DataBaseHelper.KEY_NAME, ((EditText) view.findViewById(R.id.editTextName)).getText().toString());
+                contentValues.put(DataBaseHelper.KEY_DATE, java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime()));
+                contentValues.put(DataBaseHelper.KEY_DESCRIPTION, ((EditText) view.findViewById(R.id.editTextDesc)).getText().toString());
                 String cat = "";
                 if (checkBox1.isChecked()) {
                     cat += checkBox1.getText();
@@ -74,9 +79,9 @@ public class MyDialog extends DialogFragment {
                         cat += ", ";
                     cat += checkBox3.getText();
                 }
-                contentValues.put("category", cat);
+                contentValues.put(DataBaseHelper.KEY_CATEGORY, cat);
                 if (edit) {
-                    contentValues.put("_id", getArguments().getLong(ARG_ID));
+                    contentValues.put(DataBaseHelper.KEY_ID, getArguments().getLong(ARG_ID));
                     getActivity().getContentResolver().update(MyContentProvider.URI, contentValues, null, null);
                 } else
 
@@ -87,7 +92,7 @@ public class MyDialog extends DialogFragment {
             }
         });
 
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getActivity().getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dismiss();
