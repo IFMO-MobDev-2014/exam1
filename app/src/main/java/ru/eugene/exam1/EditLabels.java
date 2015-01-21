@@ -29,11 +29,14 @@ public class EditLabels extends ActionBarActivity implements LoaderManager.Loade
     private ArrayList<String> listId;
     private ArrayList<Boolean> checked;
     private String result = "";
+    private String action;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_labels);
+
+        action = getIntent().getStringExtra("action");
 
         list = (ListView) findViewById(R.id.listEditLabels);
         labelsLoader = new LabelsLoader(this);
@@ -43,7 +46,12 @@ public class EditLabels extends ActionBarActivity implements LoaderManager.Loade
         checked = new ArrayList<>();
         String[] from = new String[]{LabelSource.COLUMN_NAME};
         int[] to = new int[]{R.id.nameLabel};
-        adapter = new SimpleCursorAdapter(this, R.layout.item_edit_labels, null, from, to, 0);
+
+        if (action.equals("detail")) {
+            adapter = new SimpleCursorAdapter(this, R.layout.item_edit_labels2, null, from, to, 0);
+        } else {
+            adapter = new SimpleCursorAdapter(this, R.layout.item_edit_labels, null, from, to, 0);
+        }
 
         list.setAdapter(adapter);
 

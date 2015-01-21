@@ -6,20 +6,23 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import ru.eugene.exam1.db.ToDoItem;
 import ru.eugene.exam1.db.ToDoProvider;
+import ru.eugene.exam1.db.ToDoSource;
 
 
 public class AddToDo extends ActionBarActivity {
     private static final int PICK_REQUEST = 1;
     private String action;
+    private String labels;
     private EditText newName;
     private EditText newDescription;
-    private EditText curLabels;
     private ToDoItem toDoItem;
+    private Button editLabels;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,25 +33,37 @@ public class AddToDo extends ActionBarActivity {
 
         newName = (EditText) findViewById(R.id.newName);
         newDescription = (EditText) findViewById(R.id.newDescription);
+        editLabels = (Button) findViewById(R.id.editLabels);
 
         toDoItem = new ToDoItem();
+
+        if (action.equals("detail")) {
+            editLabels.setText("view labels");
+            newName.setText(getIntent().getStringExtra(ToDoSource.COLUMN_NAME));
+            newDescription.setText(getIntent().getStringExtra(ToDoSource.COLUMN_DESCRIPTION));
+            labels = getIntent().getStringExtra(ToDoSource.COLUMN_LABELS);
+            newName.setEnabled(false);
+            newDescription.setEnabled(false);
+        }
 
     }
 
     public void finish(View v) {
-        String name = newName.getText().toString();
-        String description = newDescription.getText().toString();
+        if (action.equals("add")) {
+            String name = newName.getText().toString();
+            String description = newDescription.getText().toString();
 
-        if (name.isEmpty()) {
-            Toast.makeText(this, "name is empty", Toast.LENGTH_SHORT).show();
-            return;
+            if (name.isEmpty()) {
+                Toast.makeText(this, "name is empty", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            toDoItem.setName(name);
+            toDoItem.setDescription(description);
+            toDoItem.setData(System.currentTimeMillis());
+
+            getContentResolver().insert(ToDoProvider.CONTENT_URI_TODO, toDoItem.generateContentValues());
         }
-
-        toDoItem.setName(name);
-        toDoItem.setDescription(description);
-        toDoItem.setData(System.currentTimeMillis());
-
-        getContentResolver().insert(ToDoProvider.CONTENT_URI_TODO, toDoItem.generateContentValues());
         close(v);
     }
 
@@ -58,6 +73,8 @@ public class AddToDo extends ActionBarActivity {
 
     public void editLabels(View v) {
         Intent intent = new Intent(this, EditLabels.class);
+        intent.putExtra("action", action);
+        intent.putExtra("labels", labels);
         startActivityForResult(intent, PICK_REQUEST);
     }
 

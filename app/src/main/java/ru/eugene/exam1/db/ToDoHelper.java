@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by eugene on 1/21/15.
  */
 public class ToDoHelper extends SQLiteOpenHelper {
-    public static final int VERSION = 3;
+    public static final int VERSION = 4;
     public static final String NAME = "to_do.db";
 
     public ToDoHelper(Context context) {
