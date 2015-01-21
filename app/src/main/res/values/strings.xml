@@ -4,5 +4,18 @@
     <string name="app_name">exam1</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="no_todos">No todos yet.</string>
+    <string name="todo_edit_summary">Type summary of todo here.</string>
+    <string name="todo_edit_description">Type description of todo here.</string>
+    <string name="todo_edit_confirm">Confirm</string>
+    <string name="action_insert">Insert</string>
+    <string name="action_delete_todo">Delete todo</string>
+    <string name="action_change_labels">Change labels</string>
+    <string name="label_description">Label description</string>
+    <string name="non_empty_descr">Please enter non-empty description</string>
+    <string name="non_empty_summary">Please maintain a summary</string>
+    <string name="title_labels_activity">Changing labels</string>
+    <string name="title_todo_edit_activity">Detailed info</string>
+    <string name="delete_label_string">Delete label</string>
 
 </resources>

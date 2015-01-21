@@ -16,6 +16,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".TodoEditActivity"
+            android:label="@string/title_todo_edit_activity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ru.ifmo.md.exam1.MainActivity" />
+        </activity>
+
+        <activity android:name=".LabelsActivity"
+            android:label="@string/title_labels_activity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ru.ifmo.md.exam1.TodoEditActivity" />
+        </activity>
+
+        <provider
+            android:authorities="ru.ifmo.md.exam1.todos.contentprovider"
+            android:name=".database.TodoProvider"/>
+
     </application>
 
 </manifest>

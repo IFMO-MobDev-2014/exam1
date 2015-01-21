@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
     <item
-        android:id="@+id/action_insert"
+        android:id="@+id/action_change_labels"
+        android:icon="@android:drawable/ic_menu_preferences"
         android:orderInCategory="100"
-        android:icon="@android:drawable/ic_input_add"
-        android:title="@string/action_insert"
+        android:title="@string/action_change_labels"
         app:showAsAction="ifRoom|withText" />
 
 </menu>
