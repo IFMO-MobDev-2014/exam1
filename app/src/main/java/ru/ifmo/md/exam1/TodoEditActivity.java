@@ -71,16 +71,14 @@ public class TodoEditActivity extends ActionBarActivity implements LoaderManager
                 Cursor cursor1 = getContentResolver().query(
                         TodoProvider.buildLabelUri(String.valueOf(id)),
                         null, null, null, null);
+                cursor1.moveToFirst();
                 String newLabel = cursor1.getString(cursor1.getColumnIndex(LabelsTable.COLUMN_DESCRIPTION));
                 cursor1.close();
-
                 String already = addedLabels.getText().toString();
                 already = already + "|" + newLabel;
                 addedLabels.setText(already);
             }
         });
-
-
 
         getLoaderManager().initLoader(0, null, this);
 
@@ -99,12 +97,6 @@ public class TodoEditActivity extends ActionBarActivity implements LoaderManager
             updateUI();
         }
     }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
 
     private void updateUI() {
         if (cursor != null) {
@@ -126,6 +118,13 @@ public class TodoEditActivity extends ActionBarActivity implements LoaderManager
         if (TextUtils.isEmpty(mSummaryET.getText().toString())) {
             Toast.makeText(TodoEditActivity.this, getResources().getString(R.string.non_empty_summary), Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void saveAll() {
+        String summary = mSummaryET.getText().toString();
+        String desription = mDescriptionET.getText().toString();
+        String category = addedLabels.getText().toString();
+        String pubDate = times.getText().toString();
     }
 
     @Override
