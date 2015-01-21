@@ -17,8 +17,15 @@ public class data extends Activity {
         setContentView(R.layout.activity_data);
         TextView textView = (TextView) findViewById(R.id.textView2);
         textView.setText(str);
-        Cursor cursor3=getContentResolver().query(provider.CONTENT_URI,null,provider.NCAT + " = 0 ",null,"main");
-       // cursor.moveToFirst();
+        Cursor cursor=getContentResolver().query(provider.CONTENT_URI,null,"( " + provider.NCAT + " = 2 ) AND ( " + provider.NAME + " = '"+str +"' ) ",null,"main");
+        cursor.moveToFirst();
+        String name=cursor.getString(cursor.getColumnIndex(provider.NUMCAT));
+        textView = (TextView) findViewById(R.id.textView);
+        textView.setText(name);
+        name=cursor.getString(cursor.getColumnIndex(provider.LABEL));
+        textView = (TextView) findViewById(R.id.textView3);
+        textView.setText(name);
+
     }
 
 
