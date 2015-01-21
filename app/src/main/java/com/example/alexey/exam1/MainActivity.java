@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
@@ -69,8 +70,6 @@ public class MainActivity extends Activity {
                 //work with click
             }
         });
-       // SimpleCursorAdapter adapter=null;
-        //lv.setAdapter(adapter);
         lv=(ListView)findViewById(R.id.listView2);
         Cursor cursor1=getContentResolver().query(provider.CONTENT_URI,null,provider.NCAT + " = 0 ",null,"main");
         cursor1.moveToFirst();
@@ -83,10 +82,7 @@ public class MainActivity extends Activity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //  TextView textView = (TextView) view.findViewById(android.R.id.text1);
-                //  String str=textView.getText().toString();
-                //  go_2();
-                //work with click
+
             }
         });
 
@@ -102,10 +98,11 @@ public class MainActivity extends Activity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //  TextView textView = (TextView) view.findViewById(android.R.id.text1);
-                //  String str=textView.getText().toString();
-                //  go_2();
-                //work with click
+                TextView textView = (TextView) view.findViewById(android.R.id.text1);
+                String str=textView.getText().toString();
+                Intent intent = new Intent(MainActivity.this,data.class);
+                intent.putExtra("1",str);
+                startActivity(intent);
             }
         });
 
@@ -191,9 +188,9 @@ public class MainActivity extends Activity {
         alert.show();
     }
     AlertDialog.Builder alert_1;
-    public void go_1(String name){
-        AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
-        alert.setTitle("Choose category!");
+    public void go_1(final String name){
+        alert_1 = new AlertDialog.Builder(MainActivity.this);
+        alert_1.setTitle("Choose category!");
         final ListView input = new ListView(MainActivity.this);
         Cursor cursor1=getContentResolver().query(provider.CONTENT_URI,null,provider.NCAT + " = 0 ",null,"main");
         cursor1.moveToFirst();
@@ -208,22 +205,71 @@ public class MainActivity extends Activity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 TextView textView = (TextView) view.findViewById(android.R.id.text1);
                 String str=textView.getText().toString();
-                go_2();
+                go_2(name,str);
             }
         });
-        alert.setView(input);
+        alert_1.setView(input);
 
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        alert_1.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
             }
         });
 
-        alert.show();
+        alert_1.show();
     }
-
-    public void go_2()
+    String labels;
+    AlertDialog.Builder alert_2;
+    public void go_2(final String name, final String name1)
     {
 
+
+
+        alert_2 = new AlertDialog.Builder(MainActivity.this);
+        alert_2.setTitle("Choose labels!");
+        labels="";
+        final ListView input = new ListView(MainActivity.this);
+        Cursor cursor1=getContentResolver().query(provider.CONTENT_URI,null,provider.NCAT + " = 1 ",null,"main");
+        cursor1.moveToFirst();
+        SimpleCursorAdapter adapter=new SimpleCursorAdapter(this,
+                android.R.layout.simple_list_item_1,
+                cursor1,
+                new String[]{provider.NAME},
+                new int[]{android.R.id.text1});
+        input.setAdapter(adapter);
+        input.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                TextView textView = (TextView) view.findViewById(android.R.id.text1);
+                String str=textView.getText().toString();
+               if (!labels.contains(str)){
+                   labels+=" ";
+                   labels+=str;
+               }
+            }
+        });
+        alert_2.setView(input);
+
+
+        alert_2.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+
+                ContentValues cv = new ContentValues();
+                cv.put(provider.NCAT, 2);
+                cv.put(provider.NAME, name);
+                cv.put(provider.LABEL,labels);
+                cv.put(provider.NUMCAT,name1);
+                getContentResolver().insert(provider.CONTENT_URI, cv);
+
+
+            }
+        });
+
+        alert_2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+            }
+        });
+        alert_2.show();
     }
 
     @Override

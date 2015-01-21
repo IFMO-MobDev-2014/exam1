@@ -17,7 +17,7 @@ import android.util.Log;
 public class provider extends ContentProvider {
 
     final String LOG_TAG = "myLogs";
-    static String PATH = "mdb_1";
+    static String PATH = "mdb_3";
     static int DB_VERSION = 1;
     static String TABLE_NAME = "contacts";
     static final String _ID = "_id";
@@ -107,15 +107,11 @@ public class provider extends ContentProvider {
         @Override
         public void onCreate(SQLiteDatabase db) {
             if (isTableExists(db, TABLE_NAME)) return;
-            String DB_CREATE = "create table " + TABLE_NAME + "("
-                    + _ID + " integer primary key autoincrement, "
-                    + NCAT + " integer, " + NUM + " integer, " + NAME + " text, " + DESK + " text, " + NUMCAT + " integer," + LABEL + " BLOB" + ");";
 
-            /*
+
             String DB_CREATE = "create table " + TABLE_NAME + "("
                     + _ID + " integer primary key autoincrement, "
-                    + NCAT + " text, " + NUM + " text" + ");";
-                    */
+                    + NCAT + " integer, " + NUM + " integer, " + NAME + " text, " + DESK + " text, " + NUMCAT + " text," + LABEL + " text" + ");";
             db.execSQL(DB_CREATE);
         }
 
@@ -125,9 +121,10 @@ public class provider extends ContentProvider {
 
     public static boolean add_table(String NAME) {
         if (isTableExists(db, NAME)) return false;
-        String DB_CREATE = "create table " + NAME + "("
+
+        String DB_CREATE = "create table " + TABLE_NAME + "("
                 + _ID + " integer primary key autoincrement, "
-                + NCAT + " integer, " + NUM + " integer, " + provider.NAME + " text, " + DESK + " text, " + NUMCAT + " integer," + LABEL + " BLOB" + ");";
+                + NCAT + " integer, " + NUM + " integer, " + NAME + " text, " + DESK + " text, " + NUMCAT + " text," + LABEL + " text" + ");";
         db.execSQL(DB_CREATE);
         return true;
     }
