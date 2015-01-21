@@ -2,6 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context="ru.ifmo.md.exam1.NewNoteActivity">
     <item android:id="@+id/action_settings" android:title="Complete"
-        android:orderInCategory="100" app:showAsAction="never"
+        android:orderInCategory="100" app:showAsAction="ifRoom"
         android:icon="@android:drawable/ic_menu_send"/>
 </menu>
