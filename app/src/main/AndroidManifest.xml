@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ru.ifmo.md.exam1" >
+    package="ru.eugene.exam1" >
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <provider
+            android:name=".db.ToDoProvider"
+            android:authorities="ru.eugene.exam1.db"
+            android:exported="true" />
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
@@ -15,6 +20,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".AddToDo"
+            android:label="@string/title_activity_add_to_do" >
+        </activity>
+        <activity
+            android:name=".EditLabels"
+            android:label="@string/title_activity_edit_labels" >
         </activity>
     </application>
 
