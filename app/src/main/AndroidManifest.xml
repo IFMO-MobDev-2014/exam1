@@ -17,7 +17,7 @@
             android:name=".TodoDetailActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" >
         </activity>
-
+        <activity android:name=".LabelView"></activity>
         <provider
             android:exported="true"
             android:name=".contentprovider.MyTodoContentProvider"

@@ -24,7 +24,7 @@ public class MyTodoContentProvider extends ContentProvider {
     // database
     private TodoDatabaseHelper database;
 
-    // Used for the UriMacher
+    // Used for the UriMatcher
     private static final int TODOS = 10;
     private static final int TODO_ID = 20;
 

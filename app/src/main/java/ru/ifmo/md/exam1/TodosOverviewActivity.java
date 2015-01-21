@@ -48,6 +48,7 @@ public class TodosOverviewActivity extends ListActivity implements
         this.getListView().setDividerHeight(2);
         fillData();
         registerForContextMenu(getListView());
+
     }
 
     // Create the menu based on the XML defintion
@@ -65,6 +66,9 @@ public class TodosOverviewActivity extends ListActivity implements
             case R.id.insert:
                 createTodo();
                 return true;
+            case R.id.labels:
+                Intent i = new Intent(this, LabelView.class);
+                startActivity(i);
         }
         return super.onOptionsItemSelected(item);
     }
