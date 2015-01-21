@@ -11,11 +11,15 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ru.ifmo.md.exam1.database.LabelsTable;
 import ru.ifmo.md.exam1.database.TodoProvider;
 import ru.ifmo.md.exam1.database.TodoTable;
 
@@ -35,6 +39,9 @@ public class TodoEditActivity extends ActionBarActivity implements LoaderManager
     private TextView addedLabels;
     private TextView times;
     private Cursor cursor;
+    private ListView lvAvailableLables;
+
+    private SimpleCursorAdapter adapter;
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -48,6 +55,36 @@ public class TodoEditActivity extends ActionBarActivity implements LoaderManager
         addedLabels = (TextView) findViewById(R.id.et_added_labels);
         times = (TextView) findViewById(R.id.tv_time);
 
+        lvAvailableLables = (ListView) findViewById(R.id.list_available_labels);
+        adapter = new SimpleCursorAdapter(
+                this,
+                android.R.layout.simple_spinner_dropdown_item,
+                null,
+                new String[] {LabelsTable.COLUMN_DESCRIPTION},
+                new int[] {android.R.id.text1}, 0
+        );
+        lvAvailableLables.setAdapter(adapter);
+
+        lvAvailableLables.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Cursor cursor1 = getContentResolver().query(
+                        TodoProvider.buildLabelUri(String.valueOf(id)),
+                        null, null, null, null);
+                String newLabel = cursor1.getString(cursor1.getColumnIndex(LabelsTable.COLUMN_DESCRIPTION));
+                cursor1.close();
+
+                String already = addedLabels.getText().toString();
+                already = already + "|" + newLabel;
+                addedLabels.setText(already);
+            }
+        });
+
+
+
+        getLoaderManager().initLoader(0, null, this);
+
+
         Bundle extras = getIntent().getExtras();
         todoId = (bundle == null) ? -1 : bundle.getLong(EXTRA_TODO_ID);
         if (extras != null) {
@@ -56,7 +93,10 @@ public class TodoEditActivity extends ActionBarActivity implements LoaderManager
         }
 
         if (todoId != -1) {
-            getLoaderManager().initLoader(0, null, this);
+            cursor = getContentResolver().query(
+                    TodoProvider.buildTodoUri(String.valueOf(todoId)),
+                    null, null, null, null);
+            updateUI();
         }
     }
 
@@ -92,19 +132,18 @@ public class TodoEditActivity extends ActionBarActivity implements LoaderManager
     public Loader onCreateLoader(int id, Bundle args) {
         return new CursorLoader(
                 this,
-                TodoProvider.buildTodoUri(String.valueOf(todoId)),
+                TodoProvider.CONTENT_URI_LABELS,
                 null, null, null, null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        cursor = data;
-        updateUI();
+        adapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader loader) {
-
+        adapter.swapCursor(null);
     }
 
     @Override
